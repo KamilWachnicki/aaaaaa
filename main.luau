@@ -66,8 +66,7 @@ local function bloodthirstyHelperMode()
     local targetPlayer = bloodthirstyHelperModeSelectedPlayer
     Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Players:FindFirstChild(targetPlayer).Character.HumanoidRootPart.CFrame
     local connection
-    connection = Players.LocalPlayer.Character.Humanoid.Touched:Connect(function(part)
-        if not part.Parent.Name == targetPlayer then return end
+    connection = Players.LocalPlayer.Character.Humanoid.HealthChanged:Connect(function(part)
         Players.LocalPlayer.Character.Humanoid.Health = 0
         connection:Disconnect()
     end)
