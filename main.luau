@@ -1,6 +1,7 @@
 local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
+local VirtualUser = game:GetService("VirtualUser")
 
 local chosenSword = "Light" 
 local delayAfterDeath = 2
@@ -64,12 +65,14 @@ end
 
 local function bloodthirstyHelperMode()
     local targetPlayer = bloodthirstyHelperModeSelectedPlayer
-    Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Players:FindFirstChild(targetPlayer).Character.HumanoidRootPart.CFrame
     local connection
     connection = Players.LocalPlayer.Character.Humanoid.HealthChanged:Connect(function(part)
         Players.LocalPlayer.Character.Humanoid.Health = 0
         connection:Disconnect()
     end)
+    while Players.LocalPlayer.Character do
+        Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Players:FindFirstChild(targetPlayer).Character.HumanoidRootPart.CFrame
+    end
 end
 
 local function onPromptShown()
@@ -96,9 +99,9 @@ end
 connection = lumianceGiver:FindFirstChild("ProximityPrompt").PromptShown:Connect(onPromptShown)
 
 Players.LocalPlayer.Idled:Connect(function() --AntiAfk
-    game:GetService("VirtualUser"):Button2Down(Vector2.new(0, 0), Workspace.CurrentCamera.CFrame)
+    VirtualUser:Button2Down(Vector2.new(0, 0), Workspace.CurrentCamera.CFrame)
     task.wait(1)
-    game:GetService("VirtualUser"):Button2Up(Vector2.new(0, 0), Workspace.CurrentCamera.CFrame)
+    VirtualUser:Button2Up(Vector2.new(0, 0), Workspace.CurrentCamera.CFrame)
 end)
 
 UserInputService.WindowFocused:Connect(function()
@@ -121,6 +124,7 @@ UserInputService.InputBegan:Connect(function(input)
                 task.wait(delayAfterDeath)
                 characterAdded()
             end)
+            if returnCurrentlySelectedSword() then return end
             characterAdded()
         end
     end
