@@ -3,12 +3,12 @@ local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 local VirtualUser = game:GetService("VirtualUser")
 
-local chosenSword = "Light" 
+local chosenSword = "Luminence" 
 local delayAfterDeath = 2
-local swordTeleportOffset_Y_CORRDINATE = 20
-local luminancePhaseGrindMode = false
-local bloodthirstyHelperModeEnabled = true
-local bloodthirstyHelperModeSelectedPlayer = "wertezown"
+local swordTeleportOffset_Y_CORRDINATE = 25
+local luminancePhaseGrindMode = true
+local bloodthirstyHelperModeEnabled = false
+local bloodthirstyHelperModeSelectedPlayer = "eyadwolf10"
 
 
 local lumianceGiver = Workspace.SwordStands[string.format("SwordStant [ %s ]",chosenSword)].Giver
@@ -49,12 +49,12 @@ end
 
 
 local function luminanceGrindMode()
-    if returnCurrentlySelectedSword() == nil then characterAdded() return end
+repeat task.wait(0.5)  until returnCurrentlySelectedSword()
+    
     local Character = Players.LocalPlayer.Character
-    task.wait(0.5)
     mouse1click()
-    task.wait(0.5)
-    if returnCurrentlySelectedSword().Name == "???" then
+    task.wait(1)
+    if returnCurrentlySelectedSword().Name == "???"  then
         print("stopping")
         print(returnCurrentlySelectedSword())
         enabled = false
@@ -71,6 +71,8 @@ local function bloodthirstyHelperMode()
         connection:Disconnect()
     end)
     while Players.LocalPlayer.Character do
+        if not enabled then break end
+		task.wait(0.1)
         Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Players:FindFirstChild(targetPlayer).Character.HumanoidRootPart.CFrame
     end
 end
